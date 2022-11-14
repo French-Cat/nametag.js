@@ -13,14 +13,17 @@ function nametag(type, host, id, callback, refresh) {
     setInterval((() => { ws.send(JSON.stringify({ id: id })) }), refresh)
 
   } else if (type == "http") {
-    fetch(host + "/" + id)
-      .then(response => response.json())
-      .then(data => callback(data))
-      .catch(error => console.log(error))
+    
+    setInterval((() => {
+      fetch(host + "/" + id)
+        .then(response => response.json())
+        .then(data => callback(data))
+        .catch(error => console.log(error))
+    }), refresh)
   }
 
-if (document.currentScript.getAttribute('type') == "module") {
-  export { nametag }
-} else {
-  w.nametag = nametag
-}
+  if (document.currentScript.getAttribute('type') == "module") {
+    export { nametag }
+  } else {
+    w.nametag = nametag
+  }
